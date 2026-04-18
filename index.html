@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KUET Film Club</title>
+    <title>KUET Film Club | Premium Movie Experience</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <nav>
-        <h2>KUET Film Club</h2>
-        <ul>
+    <nav class="navbar">
+        <div class="logo">KUET Film Club</div>
+        <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#activities">Activities</a></li>
@@ -18,24 +19,55 @@
         </ul>
     </nav>
 
-    <section id="home">
-        <h1>Experience Cinema Together</h1>
-        <p>Welcome to the premier community for cinephiles at Khulna University of Engineering & Technology.</p>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Experience Cinema Together</h1>
+            <p>Welcome to the premier community for cinephiles at Khulna University of Engineering & Technology.</p>
+        </div>
     </section>
 
-    <section id="about">
-        <h2>About Our Club</h2>
-        <p>The KUET Film Club is a sanctuary for movie enthusiasts on campus. We explore global cinema, analyze filmmaking craft, and share our passion for movies.</p>
+    <section id="movies" class="section">
+        <div class="container">
+            <h2 class="section-title">Featured Movies</h2>
+            <div class="movie-grid">
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/original/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg" alt="Interstellar Poster">
+                    <div class="movie-info">
+                        <h4>Interstellar</h4>
+                        <span class="genre">Sci-Fi / Drama</span>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="https://filmartgallery.com/cdn/shop/files/The-Dark-Knight-Vintage-Movie-Poster-Original_96d3cfa1_5000x.jpg?v=1773770324" alt="Batman Poster">
+                    <div class="movie-info">
+                        <h4>The Dark Knight</h4>
+                        <span class="genre">Action / Crime</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="activities">
-        <h2>Club Activities</h2>
-        <ul>
-            <li><strong>Movie Shows:</strong> Regular screenings on campus.</li>
-            <li><strong>Weekly Discussions:</strong> Deep dive into plot analysis every weekend.</li>
-            <li><strong>Movie Festivals:</strong> Annual grand festivals featuring diverse genres.</li>
-            <li><strong>Campus Stalls:</strong> Pop-up stalls with exclusive posters and DVDs.</li>
-        </ul>
+    <section id="profile" class="section bg-darker">
+        <div class="container">
+            <h2 class="section-title">Member Profile Preview</h2>
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="avatar">KUET</div>
+                    <div>
+                        <h3>Mesbaul Islam</h3>
+                        <p>Joined: April 2026 | Reviews: 1</p>
+                    </div>
+                </div>
+                <div class="user-reviews">
+                    <h4>Your Recent Reviews</h4>
+                    <div class="review-item">
+                        <h5>Interstellar <span class="stars">★★★★★</span></h5>
+                        <p>"A visual masterpiece. The score by Hans Zimmer is unmatched."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <footer>

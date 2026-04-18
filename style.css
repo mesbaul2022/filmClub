@@ -1,0 +1,43 @@
+:root {
+    --bg-main: #0f0f11;
+    --bg-secondary: #1a1a1d;
+    --primary: #e5a93d; /* Premium Gold */
+    --text-light: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+body { background-color: var(--bg-main); color: var(--text-light); line-height: 1.6; }
+h1, h2, h3, h4 { color: #fff; }
+
+/* Navbar */
+.navbar { display: flex; justify-content: space-between; padding: 20px 5%; background: rgba(15,15,17,0.9); position: fixed; width: 100%; top: 0; }
+.logo { color: var(--primary); font-weight: bold; font-size: 1.5rem; }
+.nav-links { display: flex; list-style: none; gap: 20px; }
+.nav-links a { color: var(--text-light); text-decoration: none; }
+.nav-links a:hover { color: var(--primary); }
+
+/* Layout */
+.section { padding: 80px 5%; }
+.bg-darker { background-color: var(--bg-secondary); }
+.container { max-width: 1200px; margin: 0 auto; }
+.section-title { text-align: center; color: var(--primary); margin-bottom: 30px; font-size: 2rem; }
+
+/* Hero */
+.hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background: #111; }
+.hero h1 { font-size: 3rem; color: var(--primary); }
+
+/* Movie Grid */
+.movie-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.movie-card { background: #111; border-radius: 8px; overflow: hidden; }
+.movie-card img { width: 100%; height: 300px; object-fit: cover; }
+.movie-info { padding: 15px; }
+.genre { color: var(--primary); font-size: 0.8rem; }
+
+/* Profile */
+.profile-container { background: #111; padding: 30px; border-radius: 8px; max-width: 600px; margin: 0 auto; border: 1px solid #333; }
+.profile-header { display: flex; gap: 20px; border-bottom: 1px solid #333; padding-bottom: 20px; }
+.avatar { width: 60px; height: 60px; background: var(--primary); color: #000; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; }
+.review-item { background: #1a1a1d; padding: 15px; margin-top: 15px; border-radius: 5px; }
+.stars { color: var(--primary); }
+
+footer { text-align: center; padding: 20px; background: #000; }
