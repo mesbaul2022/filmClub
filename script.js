@@ -17,5 +17,30 @@ window.onclick = function(event) {
     }
 }
 
-// Optional: Test the modal automatically opens for testing purposes
 console.log("JavaScript Loaded! Ready to manage KUET Film Club interactions.");
+// Search and Filter Logic
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    let filter = this.value.toLowerCase();
+    let cards = document.querySelectorAll('.movie-card');
+    
+    cards.forEach(card => {
+        let title = card.querySelector('h4').innerText.toLowerCase();
+        if (title.includes(filter)) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+    });
+});
+
+function filterMovies(category) {
+    let cards = document.querySelectorAll('.movie-card');
+    cards.forEach(card => {
+        let genre = card.querySelector('.genre').innerText;
+        if (category === 'All' || genre.includes(category)) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
