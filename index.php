@@ -29,28 +29,33 @@
     <section id="movies" class="section">
         <div class="container">
             <h2 class="section-title">Featured Movies</h2>
-            
-            <div class="filter-controls" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-                <input type="text" id="searchInput" placeholder="Search movies..." style="padding: 10px; border-radius: 4px; border: 1px solid #333; background: #111; color: white; flex-grow: 1; max-width: 300px;">
-                <button class="btn-primary" onclick="filterMovies('All')">All</button>
-                <button class="btn-primary" onclick="filterMovies('Sci-Fi')">Sci-Fi</button>
-                <button class="btn-primary" onclick="filterMovies('Action')">Action</button>
-            </div>
             <div class="movie-grid">
-                <div class="movie-card">
-                    <img src="https://image.tmdb.org/t/p/original/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg" alt="Interstellar Poster">
+                
+                <?php
+                // Future Database Fetching Logic Will Go Here
+                // Example: while($row = $movies_data->fetch()) { 
+                ?>
+                
+                <div class="movie-card" onclick="openModal()">
+                    <img src="https://image.tmdb.org/t/p/original/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg" alt="Movie Poster">
                     <div class="movie-info">
-                        <h4>Interstellar</h4>
-                        <span class="genre">Sci-Fi / Drama</span>
+                        <h4><?php // echo $row['movie_name']; ?> Interstellar</h4>
+                        <span class="genre"><?php // echo $row['movie_quality']; ?> Sci-Fi / Drama</span>
                     </div>
                 </div>
-                <div class="movie-card">
+
+                <?php 
+                // } // End of while loop
+                ?>
+
+                <div class="movie-card" onclick="openModal()">
                     <img src="https://filmartgallery.com/cdn/shop/files/The-Dark-Knight-Vintage-Movie-Poster-Original_96d3cfa1_5000x.jpg?v=1773770324" alt="Batman Poster">
                     <div class="movie-info">
                         <h4>The Dark Knight</h4>
                         <span class="genre">Action / Crime</span>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
