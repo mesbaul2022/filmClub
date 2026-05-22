@@ -1,49 +1,67 @@
 :root {
-    --bg-main: #0f0f11;
-    --bg-secondary: #1a1a1d;
+    --bg-main: #0a0a0c;
+    --bg-secondary: #151518;
     --primary: #e5a93d; /* Premium Gold */
-    --text-light: #e0e0e0;
+    --text-light: #f0f0f0;
+    --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --gold-glow: 0 0 15px rgba(229, 169, 61, 0.3);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 body { background-color: var(--bg-main); color: var(--text-light); line-height: 1.6; }
-h1, h2, h3, h4 { color: #fff; }
+h1, h2, h3, h4 { color: #fff; font-weight: 600; }
 
-/* Navbar */
-.navbar { display: flex; justify-content: space-between; padding: 20px 5%; background: rgba(15,15,17,0.9); position: fixed; width: 100%; top: 0; }
-.logo { color: var(--primary); font-weight: bold; font-size: 1.5rem; }
-.nav-links { display: flex; list-style: none; gap: 20px; }
-.nav-links a { color: var(--text-light); text-decoration: none; }
-.nav-links a:hover { color: var(--primary); }
+/* Premium Glassmorphism Navbar */
+.navbar { 
+    display: flex; justify-content: space-between; padding: 20px 5%; 
+    background: rgba(10, 10, 12, 0.7); 
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: fixed; width: 100%; top: 0; z-index: 100;
+}
+.logo { color: var(--primary); font-weight: bold; font-size: 1.6rem; letter-spacing: 1px; text-shadow: var(--gold-glow); }
+.nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+.nav-links a { color: var(--text-light); text-decoration: none; transition: 0.3s ease; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px;}
+.nav-links a:hover { color: var(--primary); text-shadow: var(--gold-glow); }
 
 /* Layout */
-.section { padding: 80px 5%; }
+.section { padding: 100px 5% 80px; }
 .bg-darker { background-color: var(--bg-secondary); }
 .container { max-width: 1200px; margin: 0 auto; }
-.section-title { text-align: center; color: var(--primary); margin-bottom: 30px; font-size: 2rem; }
+.section-title { text-align: center; color: var(--primary); margin-bottom: 40px; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 2px;}
 
-/* Hero */
-.hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background: #111; }
-.hero h1 { font-size: 3rem; color: var(--primary); }
+/* Cinematic Hero Section */
+.hero { 
+    height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; 
+    background: linear-gradient(to bottom, rgba(10,10,12,0.3), rgba(10,10,12,1)), url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop') center/cover; 
+}
+.hero-content h1 { font-size: 4rem; color: var(--primary); margin-bottom: 15px; text-shadow: var(--gold-glow); }
+.hero-content p { font-size: 1.2rem; max-width: 600px; margin: 0 auto; color: #ccc; }
 
-/* Movie Grid */
-.movie-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-.movie-card { background: #111; border-radius: 8px; overflow: hidden; }
-.movie-card img { width: 100%; height: 300px; object-fit: cover; }
-.movie-info { padding: 15px; }
-.genre { color: var(--primary); font-size: 0.8rem; }
+/* Interactive Movie Grid */
+.movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+.movie-card { 
+    background: var(--bg-secondary); border-radius: 12px; overflow: hidden; 
+    box-shadow: var(--card-shadow); transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.movie-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(229, 169, 61, 0.15); border-color: rgba(229, 169, 61, 0.3); }
+.movie-card img { width: 100%; height: 400px; object-fit: cover; transition: 0.5s ease; }
+.movie-card:hover img { transform: scale(1.05); }
+.movie-info { padding: 20px; position: relative; background: linear-gradient(to top, var(--bg-secondary) 80%, transparent); margin-top: -20px; z-index: 2;}
+.movie-info h4 { font-size: 1.2rem; margin-bottom: 5px; }
+.genre { color: var(--primary); font-size: 0.85rem; font-weight: 500; text-transform: uppercase; }
 
-/* Profile */
-.profile-container { background: #111; padding: 30px; border-radius: 8px; max-width: 600px; margin: 0 auto; border: 1px solid #333; }
-.profile-header { display: flex; gap: 20px; border-bottom: 1px solid #333; padding-bottom: 20px; }
-.avatar { width: 60px; height: 60px; background: var(--primary); color: #000; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; }
-.review-item { background: #1a1a1d; padding: 15px; margin-top: 15px; border-radius: 5px; }
-.stars { color: var(--primary); }
-
-footer { text-align: center; padding: 20px; background: #000; }
-
-/* Modals (Added in Step 3) */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
-.modal-content { background-color: var(--bg-secondary); margin: 15% auto; padding: 30px; border: 1px solid #333; width: 80%; max-width: 500px; border-radius: 8px; position: relative; }
-.close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+/* Refined Modals */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
+.modal-content { background-color: var(--bg-secondary); margin: 10% auto; padding: 40px; border: 1px solid var(--primary); width: 90%; max-width: 600px; border-radius: 12px; position: relative; box-shadow: var(--gold-glow); }
+.close { color: #aaa; float: right; font-size: 32px; font-weight: bold; cursor: pointer; transition: 0.3s; line-height: 1; }
 .close:hover { color: var(--primary); }
+
+/* Buttons */
+.btn-primary {
+    display: inline-block; padding: 12px 24px; background: var(--primary); color: #000;
+    border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
+    transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; margin-top: 20px;
+}
+.btn-primary:hover { background: #fff; box-shadow: var(--gold-glow); }
