@@ -125,3 +125,12 @@ function submitReview() {
     closeModal('movieModal');
     alert("Review posted successfully!");
 }
+
+// Merchandise Reservation Logic
+function reserveMerch(itemName) {
+    let confirmReserve = confirm(`Would you like to reserve one ${itemName} for pickup at the KUET Club Fair stall?`);
+    
+    if (confirmReserve) {
+        alert(`Success! Your ${itemName} has been reserved. Please show your student ID at the stall.`);
+    }
+}

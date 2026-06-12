@@ -93,6 +93,31 @@
         </div>
     </section>
 
+    <section id="originals" class="section bg-darker">
+        <div class="container">
+            <h2 class="section-title">KUET Originals</h2>
+            <div class="movie-grid">
+                <div class="movie-card" onclick="playOriginal('Shadows of the Hall')">
+                    <img src="https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?q=80&w=500&auto=format&fit=crop" alt="Short Film">
+                    <div class="movie-info" style="text-align: center;">
+                        <h4>Shadows of the Hall</h4>
+                        <span class="genre">A KUET Independent Short</span><br>
+                        <span style="font-size: 0.8rem; color: #888;">▶ Play Film</span>
+                    </div>
+                </div>
+                
+                <div class="movie-card" onclick="playOriginal('Echoes')">
+                    <img src="https://images.unsplash.com/photo-1574267432553-4b462808152a?q=80&w=500&auto=format&fit=crop" alt="Short Film">
+                    <div class="movie-info" style="text-align: center;">
+                        <h4>Echoes</h4>
+                        <span class="genre">An MI Studios Production</span><br>
+                        <span style="font-size: 0.8rem; color: #888;">▶ Play Film</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Watchlist Section -->
     <section id="watchlist" class="section">
         <div class="container">
@@ -125,6 +150,29 @@
         </div>
     </section>
 
+    <section id="shop" class="section">
+        <div class="container">
+            <h2 class="section-title">Club Fair Shop</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Reserve exclusive club merchandise to pick up at our upcoming campus stall.</p>
+            
+            <div class="grid-4">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=300&auto=format&fit=crop" alt="T-Shirt" style="width: 100%; border-radius: 4px; margin-bottom: 15px;">
+                    <h4>Director's Chair T-Shirt</h4>
+                    <p style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">Premium Custom Apparel.</p>
+                    <button class="btn-primary" style="width: 100%;" onclick="reserveMerch('Custom T-Shirt')">Pre-order</button>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1580130601254-05fa235abeab?q=80&w=300&auto=format&fit=crop" alt="Poster" style="width: 100%; border-radius: 4px; margin-bottom: 15px;">
+                    <h4>Classic Movie Posters</h4>
+                    <p style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">High-gloss A3 prints.</p>
+                    <button class="btn-primary" style="width: 100%;" onclick="reserveMerch('Movie Poster')">Reserve</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <p>&copy; 2026 KUET Film Club. All rights reserved.</p>
     </footer>
@@ -136,7 +184,6 @@
         <p><strong>Title:</strong> Interstellar</p>
         <p><strong>Description:</strong> A team of explorers travel through a wormhole in space.</p>
 
-        <!-- Add this here -->
         <div class="review-section">
             <h3>Leave a Review</h3>
             <textarea id="reviewText" placeholder="Write your thoughts..." rows="3"></textarea>
@@ -144,6 +191,16 @@
         </div>
     </div>
 </div>
+
+    <div id="videoModal" class="modal">
+        <div class="modal-content" style="max-width: 800px; text-align: center;">
+            <span class="close" onclick="closeModal('videoModal')">&times;</span>
+            <h2 id="videoTitle" style="margin-bottom: 20px; color: var(--primary);">Playing Video...</h2>
+            <div style="background: #000; height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #333;">
+                <p style="color: #666; letter-spacing: 2px;">[ VIDEO PLAYER ENGINE ]</p>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 
