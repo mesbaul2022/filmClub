@@ -39,21 +39,24 @@
         <div class="container">
             <h2 class="section-title">Core Activities</h2>
             <div class="grid-4">
-                <div class="card">
-                    <h3 style="color: var(--primary); margin-bottom: 10px;">Movie Shows</h3>
-                    <p>Bi-weekly campus screenings featuring a curated mix of blockbusters and international cinema.</p>
+                <div class="card" onclick="openDedicatedGallery('screenings')">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Cinematic Screenings</h3>
+                    <p>Experience campus premieres of massive hits like 'Haoa' and 'Doob' right here in the KUET auditorium.</p>
                 </div>
-                <div class="card">
-                    <h3 style="color: var(--primary); margin-bottom: 10px;">Discussion</h3>
-                    <p>Post-screening deep dives into plot structures, character arcs, and directorial choices.</p>
+                
+                <div class="card" onclick="openDedicatedGallery('podcasts')">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Podcasts & Discussions</h3>
+                    <p>Deep dive into filmmaking through interactive sessions and dedicated podcasts like 'Humayun Adda'.</p>
                 </div>
-                <div class="card">
-                    <h3 style="color: var(--primary); margin-bottom: 10px;">Premieres</h3>
-                    <p>Exclusive showcase events displaying original short films by talented KUET students.</p>
+                
+                <div class="card" onclick="openDedicatedGallery('originals')">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Originals & Contests</h3>
+                    <p>Showcasing student talent through the Intra-KUET Short Film Contest and exclusive original premieres.</p>
                 </div>
-                <div class="card">
-                    <h3 style="color: var(--primary); margin-bottom: 10px;">Club Fair</h3>
-                    <p>Active participation in the annual campus fair. Visit our stalls for exclusive merch and DVDs.</p>
+                
+                <div class="card" onclick="openDedicatedGallery('fairs')">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Festivals & Recognitions</h3>
+                    <p>From energetic Club Fairs to participating in external film recognitions like Operation Sundarban.</p>
                 </div>
             </div>
         </div>
@@ -193,7 +196,30 @@
         </div>
     </div>
 
+    <div id="galleryModal" class="modal">
+        <div class="modal-content" style="max-width: 1000px; background: rgba(20, 20, 24, 0.95);">
+            <span class="close" onclick="closeModal('galleryModal')">&times;</span>
+            <h2 id="galleryTitle" style="color: var(--primary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;">Event Gallery</h2>
+            
+            <div id="galleryGrid" class="gallery-grid"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+
+    <div id="dedicatedGalleryOverlay" class="gallery-overlay">
+        <div class="gallery-interface-container">
+            <div class="gallery-interface-header">
+                <h2 id="interfaceTitle">Activity Gallery</h2>
+                <button class="close-interface-btn" onclick="closeDedicatedGallery()">&times; Close View</button>
+            </div>
+            
+            <p id="interfaceDescription" class="interface-subtitle"></p>
+            
+            <div id="interfacePhotoGrid" class="interface-photo-grid">
+                </div>
+        </div>
+    </div>
 
 </body>
 </html>
