@@ -1,20 +1,32 @@
-// Function to open the modal
-// We will trigger this by adding onclick="openModal()" to our movie cards later
-function openModal() {
-    document.getElementById('movieModal').style.display = "block";
+// Function to open specific modals
+function openModal(modalId = 'movieModal', movieTitle = '') {
+    document.getElementById(modalId).style.display = "block";
+    document.body.style.overflow = "hidden";
+    
+    if(modalId === 'movieModal') {
+        window.currentMovieSelection = movieTitle; 
+    }
 }
 
-// Function to close the modal
-function closeModal() {
-    document.getElementById('movieModal').style.display = "none";
+// Function to close specific modals
+function closeModal(modalId = 'movieModal') {
+    document.getElementById(modalId).style.display = "none";
+    document.body.style.overflow = "auto";
 }
 
 // Close modal if user clicks outside of the box
 window.onclick = function(event) {
-    let modal = document.getElementById('movieModal');
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
+    let movieModal = document.getElementById('movieModal');
+    let videoModal = document.getElementById('videoModal');
+    
+    if (event.target == movieModal) closeModal('movieModal');
+    if (event.target == videoModal) closeModal('videoModal');
+}
+
+// KUET Originals Player Logic
+function playOriginal(title) {
+    document.getElementById('videoTitle').innerText = "Now Playing: " + title;
+    openModal('videoModal');
 }
 
 console.log("JavaScript Loaded! Ready to manage KUET Film Club interactions.");
