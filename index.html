@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KUET Film Club | Premium Movie Experience</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">KUET Film Club</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#activities">Activities</a></li>
+            <li><a href="#movies">Movies</a></li>
+            <li><a href="#profile">My Profile</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Experience Cinema Together</h1>
+            <p>Welcome to the premier community for cinephiles at Khulna University of Engineering & Technology.</p>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">The KUET Cinema Culture</h2>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center; color: var(--text-muted); font-size: 1.1rem;">
+                <p style="margin-bottom: 15px;">We are a collective of cinephiles, student directors, and critics dedicated to the art of visual storytelling. From dissecting cinematography to launching student filmmakers, we bridge the gap between engineering and the cinematic arts.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="activities" class="section bg-darker">
+        <div class="container">
+            <h2 class="section-title">Core Activities</h2>
+            <div class="grid-4">
+                <div class="card">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Movie Shows</h3>
+                    <p>Bi-weekly campus screenings featuring a curated mix of blockbusters and international cinema.</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Discussion</h3>
+                    <p>Post-screening deep dives into plot structures, character arcs, and directorial choices.</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Premieres</h3>
+                    <p>Exclusive showcase events displaying original short films by talented KUET students.</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Club Fair</h3>
+                    <p>Active participation in the annual campus fair. Visit our stalls for exclusive merch and DVDs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="movies" class="section">
+        <div class="container">
+            <h2 class="section-title">Featured Movies</h2>
+            <div class="movie-grid">
+                
+                <?php
+                // Future Database Fetching Logic Will Go Here
+                // Example: while($row = $movies_data->fetch()) { 
+                ?>
+                
+                <div class="movie-card" onclick="openModal()">
+                    <img src="https://image.tmdb.org/t/p/original/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg" alt="Movie Poster">
+                    <div class="movie-info">
+                        <h4><?php // echo $row['movie_name']; ?> Interstellar</h4>
+                        <span class="genre"><?php // echo $row['movie_quality']; ?> Sci-Fi / Drama</span>
+                    </div>
+                </div>
+
+                <?php 
+                // } // End of while loop
+                ?>
+
+                <div class="movie-card" onclick="openModal()">
+                    <img src="https://filmartgallery.com/cdn/shop/files/The-Dark-Knight-Vintage-Movie-Poster-Original_96d3cfa1_5000x.jpg?v=1773770324" alt="Batman Poster">
+                    <div class="movie-info">
+                        <h4>The Dark Knight</h4>
+                        <span class="genre">Action / Crime</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Watchlist Section -->
+    <section id="watchlist" class="section">
+        <div class="container">
+            <h2 class="section-title">My Watchlist</h2>
+            <div id="watchlist-container" class="movie-grid">
+                <p style="color: var(--text-muted);">Your watchlist is empty. Add some movies!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="profile" class="section bg-darker">
+        <div class="container">
+            <h2 class="section-title">Member Profile Preview</h2>
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="avatar">KUET</div>
+                    <div>
+                        <h3>Mesbaul Islam</h3>
+                        <p>Joined: April 2026 | Reviews: 1</p>
+                    </div>
+                </div>
+                <div class="user-reviews">
+                    <h4>Your Recent Reviews</h4>
+                    <div class="review-item">
+                        <h5>Interstellar <span class="stars">★★★★★</span></h5>
+                        <p>"A visual masterpiece. The score by Hans Zimmer is unmatched."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 KUET Film Club. All rights reserved.</p>
+    </footer>
+
+    <div id="movieModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Movie Details</h2>
+        <p><strong>Title:</strong> Interstellar</p>
+        <p><strong>Description:</strong> A team of explorers travel through a wormhole in space.</p>
+
+        <!-- Add this here -->
+        <div class="review-section">
+            <h3>Leave a Review</h3>
+            <textarea id="reviewText" placeholder="Write your thoughts..." rows="3"></textarea>
+            <button class="btn-primary" onclick="submitReview()">Submit Review</button>
+        </div>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
