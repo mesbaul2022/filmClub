@@ -185,7 +185,7 @@ h1, h2, h3, h4 { color: #fff; font-weight: 600; }
     padding-bottom: 60px;
 }
 
-/* Individual Image Element Styling */
+/* Individual Image Element Styling (Updated for Text) */
 .interface-photo-item {
     background: var(--bg-secondary);
     border-radius: 10px;
@@ -193,11 +193,13 @@ h1, h2, h3, h4 { color: #fff; font-weight: 600; }
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: var(--card-shadow);
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column; /* Stacks the image and text vertically */
 }
 
 .interface-photo-item img {
     width: 100%;
-    height: 220px;
+    height: 200px; /* Adjusted to make room for the text block */
     object-fit: cover;
     display: block;
     transition: transform 0.5s ease;
@@ -212,4 +214,21 @@ h1, h2, h3, h4 { color: #fff; font-weight: 600; }
 
 .interface-photo-item:hover img {
     transform: scale(1.04);
+}
+
+/* Photo Description Text Styling */
+.photo-description {
+    padding: 15px 10px;
+    text-align: center;
+    font-size: 1rem;
+    color: #ff5e5e; /* Premium Red/Coral accent matching your mockup */
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    background: #0a0a0c;
+    margin: 0;
+    flex-grow: 1; /* Ensures text boxes align evenly in the grid */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: capitalize;
 }
