@@ -9,6 +9,33 @@ $movies_result = $conn->query($movies_query);
 $events_query = "SELECT * FROM events ORDER BY event_date ASC LIMIT 3";
 $events_result = $conn->query($events_query);
 
+// Fetch logged-in user's profile preview data
+$profile_data = null;
+$latest_review = null;
+$review_count = 0;
+
+if (isset($_SESSION['user_id'])) {
+    $active_user_id = $_SESSION['user_id'];
+    
+    // Get user details
+    $user_query = $conn->query("SELECT full_name, created_at, profile_image FROM users WHERE id = $active_user_id");
+    if ($user_query && $user_query->num_rows > 0) {
+        $profile_data = $user_query->fetch_assoc();
+    }
+
+    // Get their single most recent review
+    $review_query = $conn->query("SELECT r.rating, r.review_text, m.title FROM reviews r JOIN movies m ON r.movie_id = m.id WHERE r.user_id = $active_user_id ORDER BY r.created_at DESC LIMIT 1");
+    if ($review_query && $review_query->num_rows > 0) {
+        $latest_review = $review_query->fetch_assoc();
+    }
+
+    // Count their total reviews
+    $count_query = $conn->query("SELECT COUNT(*) as total FROM reviews WHERE user_id = $active_user_id");
+    if ($count_query) {
+        $review_count = $count_query->fetch_assoc()['total'];
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -146,28 +173,47 @@ $events_result = $conn->query($events_query);
         <div class="container">
             <h2 class="section-title">KUET Originals</h2>
             <div class="movie-grid">
-                <div class="movie-card" onclick="playOriginal('Shadows of the Hall')">
-                    <img src="https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?q=80&w=500&auto=format&fit=crop" alt="Short Film">
+                
+                <div class="movie-card" onclick="window.location.href='original.php?film=shajghor'">
+                    <img src="images/shajghor.jpg" alt="Shajghor">
                     <div class="movie-info" style="text-align: center;">
-                        <h4>Shadows of the Hall</h4>
-                        <span class="genre">A KUET Independent Short</span><br>
-                        <span style="font-size: 0.8rem; color: #888;">▶ Play Film</span>
+                        <h4>Shajghor</h4>
+                        <span class="genre">Short Film</span><br>
+                        <span style="font-size: 0.8rem; color: var(--primary); font-weight: bold; letter-spacing: 1px; display: inline-block; margin-top: 8px;">VIEW DETAILS</span>
                     </div>
                 </div>
                 
-                <div class="movie-card" onclick="playOriginal('Echoes')">
-                    <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=500&auto=format&fit=crop" alt="Echoes Short Film">
+                <div class="movie-card" onclick="window.location.href='original.php?film=debi'">
+                    <img src="images/debi.jpg" alt="Debi Music Video">
                     <div class="movie-info" style="text-align: center;">
-                        <h4>Echoes</h4>
-                        <span class="genre">An MI Studios Production</span><br>
-                        <span style="font-size: 0.8rem; color: #888;">▶ Play Film</span>
+                        <h4>Debi</h4>
+                        <span class="genre">Music Video</span><br>
+                        <span style="font-size: 0.8rem; color: var(--primary); font-weight: bold; letter-spacing: 1px; display: inline-block; margin-top: 8px;">VIEW DETAILS</span>
                     </div>
                 </div>
+
+                <div class="movie-card" onclick="window.location.href='original.php?film=satyajit'">
+                    <img src="images/satyajit.jpg" alt="Tribute to Satyajit Ray">
+                    <div class="movie-info" style="text-align: center;">
+                        <h4>Tribute to Satyajit Ray</h4>
+                        <span class="genre">Documentary / Tribute</span><br>
+                        <span style="font-size: 0.8rem; color: var(--primary); font-weight: bold; letter-spacing: 1px; display: inline-block; margin-top: 8px;">VIEW DETAILS</span>
+                    </div>
+                </div>
+
+                <div class="movie-card" onclick="window.location.href='original.php?film=perfect'">
+                    <img src="images/perfect.jpg" alt="Perfect Cover">
+                    <div class="movie-info" style="text-align: center;">
+                        <h4>Perfect || Ed Sheeran Cover</h4>
+                        <span class="genre">Music Video Cover</span><br>
+                        <span style="font-size: 0.8rem; color: var(--primary); font-weight: bold; letter-spacing: 1px; display: inline-block; margin-top: 8px;">VIEW DETAILS</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Watchlist Section -->
     <section id="watchlist" class="section">
         <div class="container">
             <h2 class="section-title">My Watchlist</h2>
@@ -180,45 +226,47 @@ $events_result = $conn->query($events_query);
     <section id="profile" class="section bg-darker">
         <div class="container">
             <h2 class="section-title">Member Profile Preview</h2>
-            <div class="profile-container">
-                <div class="profile-header">
-                    <div class="avatar">KUET</div>
-                    <div>
-                        <h3>Mesbaul Islam</h3>
-                        <p>Joined: April 2026 | Reviews: 1</p>
-                    </div>
-                </div>
-                <div class="user-reviews">
-                    <h4>Your Recent Reviews</h4>
-                    <div class="review-item">
-                        <h5>Interstellar <span class="stars">★★★★★</span></h5>
-                        <p>"A visual masterpiece. The score by Hans Zimmer is unmatched."</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="shop" class="section">
-        <div class="container">
-            <h2 class="section-title">Club Fair Shop</h2>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Reserve exclusive club merchandise to pick up at our upcoming campus stall.</p>
             
-            <div class="grid-4">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=300&auto=format&fit=crop" alt="T-Shirt" style="width: 100%; border-radius: 4px; margin-bottom: 15px;">
-                    <h4>Director's Chair T-Shirt</h4>
-                    <p style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">Premium Custom Apparel.</p>
-                    <button class="btn-primary" style="width: 100%;" onclick="reserveMerch('Custom T-Shirt')">Pre-order</button>
+            <?php if (isset($_SESSION['user_id']) && $profile_data): ?>
+                <?php 
+                    // Check if they have a custom profile picture
+                    $avatar = ($profile_data['profile_image'] != 'default.png' && !empty($profile_data['profile_image'])) 
+                              ? 'uploads/' . htmlspecialchars($profile_data['profile_image']) 
+                              : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+                ?>
+                <div class="profile-container" style="max-width: 800px; margin: 0 auto;">
+                    <div class="profile-header" style="display: flex; gap: 20px; align-items: center; margin-bottom: 25px;">
+                        <img src="<?php echo $avatar; ?>" alt="Avatar" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
+                        <div>
+                            <h3 style="color: #fff; font-size: 1.6rem;"><?php echo htmlspecialchars($profile_data['full_name']); ?></h3>
+                            <p style="color: #aaa; font-size: 0.95rem;">Joined: <?php echo date('F Y', strtotime($profile_data['created_at'])); ?> &nbsp;|&nbsp; Total Reviews: <span style="color: var(--primary); font-weight: bold;"><?php echo $review_count; ?></span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="user-reviews" style="background: #111; padding: 25px; border-radius: 8px; border-left: 4px solid var(--primary);">
+                        <h4 style="color: #fff; margin-bottom: 15px; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Your Most Recent Review</h4>
+                        
+                        <?php if ($latest_review): ?>
+                            <div class="review-item">
+                                <h5 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 8px;">
+                                    <?php echo htmlspecialchars($latest_review['title']); ?> 
+                                    <span style="color: #fff; font-size: 1rem; margin-left: 10px;">⭐ <?php echo $latest_review['rating']; ?>/10</span>
+                                </h5>
+                                <p style="color: #ccc; font-style: italic; line-height: 1.6;">"<?php echo nl2br(htmlspecialchars($latest_review['review_text'])); ?>"</p>
+                            </div>
+                        <?php else: ?>
+                            <p style="color: #888;">You haven't reviewed any movies yet. Visit a movie page to drop your first rating!</p>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1580130601254-05fa235abeab?q=80&w=300&auto=format&fit=crop" alt="Poster" style="width: 100%; border-radius: 4px; margin-bottom: 15px;">
-                    <h4>Classic Movie Posters</h4>
-                    <p style="font-size: 0.85rem; color: #aaa; margin-top: 5px;">High-gloss A3 prints.</p>
-                    <button class="btn-primary" style="width: 100%;" onclick="reserveMerch('Movie Poster')">Reserve</button>
+
+            <?php else: ?>
+                <div style="text-align: center; padding: 40px; background: #111; border-radius: 8px; border: 1px dashed #333; max-width: 800px; margin: 0 auto;">
+                    <p style="color: #888; font-size: 1.1rem; margin-bottom: 20px;">Log in to view your personalized profile preview and recent cinematic reviews.</p>
+                    <a href="login.php" class="btn-primary">Login Now</a>
                 </div>
-            </div>
+            <?php endif; ?>
+            
         </div>
     </section>
 
@@ -227,26 +275,33 @@ $events_result = $conn->query($events_query);
     </footer>
 
     <div id="movieModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Movie Details</h2>
-        <p><strong>Title:</strong> Interstellar</p>
-        <p><strong>Description:</strong> A team of explorers travel through a wormhole in space.</p>
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Movie Details</h2>
+            <p><strong>Title:</strong> Interstellar</p>
+            <p><strong>Description:</strong> A team of explorers travel through a wormhole in space.</p>
 
-        <div class="review-section">
-            <h3>Leave a Review</h3>
-            <textarea id="reviewText" placeholder="Write your thoughts..." rows="3"></textarea>
-            <button class="btn-primary" onclick="submitReview()">Submit Review</button>
+            <div class="review-section">
+                <h3>Leave a Review</h3>
+                <textarea id="reviewText" placeholder="Write your thoughts..." rows="3"></textarea>
+                <button class="btn-primary" onclick="submitReview()">Submit Review</button>
+            </div>
         </div>
     </div>
-</div>
 
-    <div id="videoModal" class="modal">
-        <div class="modal-content" style="max-width: 800px; text-align: center;">
-            <span class="close" onclick="closeModal('videoModal')">&times;</span>
-            <h2 id="videoTitle" style="margin-bottom: 20px; color: var(--primary);">Playing Video...</h2>
-            <div style="background: #000; height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #333;">
-                <p style="color: #666; letter-spacing: 2px;">[ VIDEO PLAYER ENGINE ]</p>
+    <div id="originalModal" class="modal">
+        <div class="modal-content" style="max-width: 700px; background: rgba(20, 20, 24, 0.98); border: 1px solid var(--primary); text-align: left;">
+            <span class="close" onclick="closeModal('originalModal')">&times;</span>
+            
+            <h2 id="originalTitle" style="margin-bottom: 20px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; text-align: center;">Film Title</h2>
+            
+            <div style="text-align: center; margin-bottom: 25px;">
+                <img id="originalImage" src="" alt="Cover" style="width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+            </div>
+            
+            <div style="padding: 25px; background: #111; border-radius: 8px; border-left: 4px solid var(--primary);">
+                <h4 style="color: #fff; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;">Production Information</h4>
+                <p id="originalDetails" style="color: #ccc; font-size: 1.05rem; line-height: 1.8;"></p>
             </div>
         </div>
     </div>

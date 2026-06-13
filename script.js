@@ -17,18 +17,18 @@ function closeModal(modalId = 'movieModal') {
 // Close modal if user clicks outside of the box
 window.onclick = function(event) {
     let movieModal = document.getElementById('movieModal');
-    let videoModal = document.getElementById('videoModal');
-    let galleryModal = document.getElementById('galleryModal'); // We added this
+    let galleryModal = document.getElementById('galleryModal');
+    let originalModal = document.getElementById('originalModal'); // Added this
     
     if (event.target == movieModal) closeModal('movieModal');
-    if (event.target == videoModal) closeModal('videoModal');
-    if (event.target == galleryModal) closeModal('galleryModal'); // We added this
+    if (event.target == galleryModal) closeModal('galleryModal');
+    if (event.target == originalModal) closeModal('originalModal'); // Added this
 }
 
-// KUET Originals Player Logic
-function playOriginal(title) {
-    document.getElementById('videoTitle').innerText = "Now Playing: " + title;
-    openModal('videoModal');
+// Ensure the "X" close button also stops the audio
+function closeVideoModal() {
+    closeModal('videoModal');
+    document.getElementById('youtubePlayer').src = "";
 }
 
 console.log("JavaScript Loaded! Ready to manage KUET Film Club interactions.");
@@ -131,15 +131,6 @@ function submitReview() {
     document.getElementById('reviewText').value = "";
     closeModal('movieModal');
     alert("Review posted successfully!");
-}
-
-// Merchandise Reservation Logic
-function reserveMerch(itemName) {
-    let confirmReserve = confirm(`Would you like to reserve one ${itemName} for pickup at the KUET Club Fair stall?`);
-    
-    if (confirmReserve) {
-        alert(`Success! Your ${itemName} has been reserved. Please show your student ID at the stall.`);
-    }
 }
 
 // --- NEW GALLERY LOGIC ---
@@ -306,4 +297,45 @@ function openDedicatedGallery(categoryKey) {
 function closeDedicatedGallery() {
     document.getElementById('dedicatedGalleryOverlay').style.display = "none";
     document.body.style.overflow = "auto"; // Re-enables document body scroll
+}
+
+
+// ========================================================
+//      KUET ORIGINALS DETAILS ENGINE
+// ========================================================
+
+const originalsData = {
+    shajghor: {
+        title: "Shajghor",
+        imgSrc: "images/shajghor.jpg",
+        details: "<strong>Directed by:</strong> Pavel (KUET URP'16)<br><strong>Screenplay:</strong> Anika (KUET URP'16)<br><strong>Assistant Director:</strong> Swadhin (KUET URP'16)<br><br><strong>Cast & Voice:</strong> Anika"
+    },
+    debi: {
+        title: "Debi",
+        imgSrc: "images/debi.jpg",
+        details: "Created for the cultural night of Odoito '13 (KUET 2k13).<br><br><strong>Direction:</strong> Sohan<br><strong>Cinematography:</strong> Proshonul Haque Rafa & Shadman Rahman Doha<br><strong>Cast:</strong> Sohan, George & Preema<br><strong>Special Appearance:</strong> Faria & Shoshi"
+    },
+    satyajit: {
+        title: "A Tribute to Satyajit Ray",
+        imgSrc: "images/satyajit.jpg",
+        details: "A tribute presented by KUET Film Society. This video was officially premiered at the Satyajit Cholochitro Utshob '2017 at the KUET Auditorium."
+    },
+    perfect: {
+        title: "Perfect || ED Sheeran Cover",
+        imgSrc: "images/perfect.jpg",
+        details: "A beautiful cinematic tribute to the song 'Perfect' from the students of KUET.<br><br><strong>Direction, Cinematography & Editing:</strong> Mrinmoy Roy<br><strong>Cast:</strong> Muntaseer Rahman & Tabassum Islam Sreya<br><strong>Promotional Partner:</strong> KUET Film Society"
+    }
+};
+
+function showOriginalDetails(filmKey) {
+    // 1. Get the data
+    const data = originalsData[filmKey];
+    
+    // 2. Push text and image to the HTML
+    document.getElementById('originalTitle').innerText = data.title;
+    document.getElementById('originalImage').src = data.imgSrc;
+    document.getElementById('originalDetails').innerHTML = data.details;
+    
+    // 3. Open the modal
+    openModal('originalModal');
 }
