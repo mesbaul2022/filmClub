@@ -1,3 +1,16 @@
+<?php
+session_start();
+require_once 'config/db.php';
+
+// Fetch the latest movies added by the Admin
+$movies_query = "SELECT * FROM movies ORDER BY created_at DESC LIMIT 8";
+$movies_result = $conn->query($movies_query);
+// Fetch upcoming events
+$events_query = "SELECT * FROM events ORDER BY event_date ASC LIMIT 3";
+$events_result = $conn->query($events_query);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +28,19 @@
             <li><a href="#about">About</a></li>
             <li><a href="#activities">Activities</a></li>
             <li><a href="#movies">Movies</a></li>
-            <li><a href="#profile">My Profile</a></li>
+            
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <?php if ($_SESSION['user_role'] === 'admin'): ?>
+                    <li><a href="admin.php" style="color: var(--primary); font-weight: bold;">Command Center</a></li>
+                <?php else: ?>
+                    <li><a href="dashboard.php" style="color: var(--primary); font-weight: bold;">My Dashboard</a></li>
+                <?php endif; ?>
+                <li><a href="logout.php" style="color: #ff5e5e;">Logout</a></li>
+                
+            <?php else: ?>
+                <li><a href="login.php" style="color: var(--primary);">Login</a></li>
+                <li><a href="register.php" class="btn-primary" style="padding: 8px 15px; margin-top: 0; color: #000;">Join Us</a></li>
+            <?php endif; ?>
         </ul>
     </nav>
 
@@ -23,6 +48,9 @@
         <div class="hero-content">
             <h1>Experience Cinema Together</h1>
             <p>Welcome to the premier community for cinephiles at Khulna University of Engineering & Technology.</p>
+            
+            <a href="register.php" class="btn-primary" style="font-size: 1.1rem; padding: 15px 35px; text-decoration: none; display: inline-block;">Become a Member</a>
+            
         </div>
     </section>
 
@@ -62,28 +90,55 @@
         </div>
     </section>
 
+    <section id="events" class="section bg-darker">
+        <div class="container">
+            <h2 class="section-title">Upcoming Club Events</h2>
+            
+            <div class="grid-4" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <?php if ($events_result && $events_result->num_rows > 0): ?>
+                    <?php while ($event = $events_result->fetch_assoc()): ?>
+                        <div class="card" style="padding: 0; overflow: hidden; border: 1px solid #333; text-align: left;">
+                            <img src="uploads/<?php echo htmlspecialchars($event['banner_image']); ?>" alt="Event Banner" style="width: 100%; height: 200px; object-fit: cover;">
+                            <div style="padding: 20px;">
+                                <h3 style="color: var(--primary); margin-bottom: 10px;"><?php echo htmlspecialchars($event['event_name']); ?></h3>
+                                <p style="color: #aaa; margin-bottom: 5px;"><strong style="color: #fff;">Date:</strong> <?php echo date('F j, Y, g:i a', strtotime($event['event_date'])); ?></p>
+                                <p style="color: #aaa; margin-bottom: 5px;"><strong style="color: #fff;">Venue:</strong> <?php echo htmlspecialchars($event['venue']); ?></p>
+                                <p style="color: #aaa; margin-bottom: 15px;"><strong style="color: #fff;">Duration:</strong> <?php echo $event['duration']; ?> Hours</p>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: #111; border-radius: 8px; border: 1px dashed #333;">
+                        <p style="color: #888; font-size: 1.1rem;">No upcoming events scheduled right now. Stay tuned!</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+
     <section id="movies" class="section">
         <div class="container">
             <h2 class="section-title">Featured Movies</h2>
             <div class="movie-grid">
                 
-                <div class="movie-card" onclick="openModal()">
-                    <img src="https://image.tmdb.org/t/p/original/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg" alt="Movie Poster">
-                    <div class="movie-info">
-                        <h4>Interstellar</h4>
-                        <span class="genre">Sci-Fi / Drama</span>
-                    </div>
-                </div>
+                <?php if ($movies_result->num_rows > 0): ?>
+                    <?php while ($row = $movies_result->fetch_assoc()): ?>
+                        
+                        <div class="movie-card" onclick="window.location.href='movie.php?id=<?php echo $row['id']; ?>'">
+                            <img src="uploads/<?php echo htmlspecialchars($row['poster_image'], ENT_QUOTES); ?>" alt="<?php echo htmlspecialchars($row['title'], ENT_QUOTES); ?> Poster">
+                            <div class="movie-info">
+                                <h4><?php echo htmlspecialchars($row['title'], ENT_QUOTES); ?></h4>
+                                <span class="genre"><?php echo htmlspecialchars($row['genre'], ENT_QUOTES); ?></span>
+                            </div>
+                        </div>
 
-                <div class="movie-card" onclick="openModal()">
-                    <img src="https://filmartgallery.com/cdn/shop/files/The-Dark-Knight-Vintage-Movie-Poster-Original_96d3cfa1_5000x.jpg?v=1773770324" alt="Batman Poster">
-                    <div class="movie-info">
-                        <h4>The Dark Knight</h4>
-                        <span class="genre">Action / Crime</span>
-                    </div>
-                </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p style="color: var(--text-muted); text-align: center; width: 100%; padding: 20px;">No featured movies added yet. Admins are updating the library!</p>
+                <?php endif; ?>
 
             </div>
+            
         </div>
     </section>
 
