@@ -9,6 +9,37 @@ $movies_result = $conn->query($movies_query);
 $events_query = "SELECT * FROM events ORDER BY event_date ASC LIMIT 3";
 $events_result = $conn->query($events_query);
 
+// --- LOGIC: ADD/REMOVE FROM WATCHLIST ---
+if (isset($_POST['toggle_watchlist']) && isset($_SESSION['user_id'])) {
+    $wl_user_id = $_SESSION['user_id'];
+    $wl_movie_id = (int)$_POST['movie_id'];
+
+    // Check if the movie is already in the watchlist
+    $check_wl = $conn->query("SELECT id FROM watchlist WHERE user_id = $wl_user_id AND movie_id = $wl_movie_id");
+    
+    if ($check_wl->num_rows > 0) {
+        // It's already there, so remove it (Unsave)
+        $conn->query("DELETE FROM watchlist WHERE user_id = $wl_user_id AND movie_id = $wl_movie_id");
+    } else {
+        // It's not there, so add it (Save)
+        $conn->query("INSERT INTO watchlist (user_id, movie_id) VALUES ($wl_user_id, $wl_movie_id)");
+    }
+    
+    // Refresh the page so the button updates instantly
+    header("Location: index.php#movies");
+    exit();
+}
+
+// Fetch the logged-in user's watchlist array
+$my_watchlist = [];
+if (isset($_SESSION['user_id'])) {
+    $wl_user_id = $_SESSION['user_id'];
+    $wl_query = $conn->query("SELECT movie_id FROM watchlist WHERE user_id = $wl_user_id");
+    while ($row = $wl_query->fetch_assoc()) {
+        $my_watchlist[] = $row['movie_id'];
+    }
+}
+
 // Fetch logged-in user's profile preview data
 $profile_data = null;
 $latest_review = null;
@@ -151,7 +182,18 @@ if (isset($_SESSION['user_id'])) {
                 <?php if ($movies_result->num_rows > 0): ?>
                     <?php while ($row = $movies_result->fetch_assoc()): ?>
                         
-                        <div class="movie-card" onclick="window.location.href='movie.php?id=<?php echo $row['id']; ?>'">
+                        <div class="movie-card" style="position: relative;" onclick="window.location.href='movie.php?id=<?php echo $row['id']; ?>'">
+                            
+                            <?php if (isset($_SESSION['user_id'])): ?>
+                                <?php $is_saved = in_array($row['id'], $my_watchlist); ?>
+                                <form method="POST" action="index.php" style="position: absolute; top: 10px; right: 10px; z-index: 10;" onclick="event.stopPropagation();">
+                                    <input type="hidden" name="movie_id" value="<?php echo $row['id']; ?>">
+                                    <button type="submit" name="toggle_watchlist" style="background: rgba(0,0,0,0.8); border: 1px solid var(--primary); color: <?php echo $is_saved ? 'var(--primary)' : '#fff'; ?>; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+                                        <?php echo $is_saved ? '✔ Saved' : '+ Watchlist'; ?>
+                                    </button>
+                                </form>
+                            <?php endif; ?>
+
                             <img src="uploads/<?php echo htmlspecialchars($row['poster_image'], ENT_QUOTES); ?>" alt="<?php echo htmlspecialchars($row['title'], ENT_QUOTES); ?> Poster">
                             <div class="movie-info">
                                 <h4><?php echo htmlspecialchars($row['title'], ENT_QUOTES); ?></h4>
@@ -160,6 +202,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
 
                     <?php endwhile; ?>
+                    
                 <?php else: ?>
                     <p style="color: var(--text-muted); text-align: center; width: 100%; padding: 20px;">No featured movies added yet. Admins are updating the library!</p>
                 <?php endif; ?>
@@ -217,9 +260,45 @@ if (isset($_SESSION['user_id'])) {
     <section id="watchlist" class="section">
         <div class="container">
             <h2 class="section-title">My Watchlist</h2>
-            <div id="watchlist-container" class="movie-grid">
-                <p style="color: var(--text-muted);">Your watchlist is empty. Add some movies!</p>
+            
+            <div class="movie-grid">
+                <?php if (!isset($_SESSION['user_id'])): ?>
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: #111; border-radius: 8px; border: 1px dashed #333;">
+                        <p style="color: #888; font-size: 1.1rem; margin-bottom: 20px;">Log in to start building your personal movie watchlist.</p>
+                        <a href="login.php" class="btn-primary">Login Now</a>
+                    </div>
+
+                <?php elseif (empty($my_watchlist)): ?>
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: #111; border-radius: 8px; border: 1px dashed #333;">
+                        <p style="color: #888; font-size: 1.1rem;">Your watchlist is currently empty. Click the "+ Watchlist" button on any movie above to save it here!</p>
+                    </div>
+
+                <?php else: ?>
+                    <?php
+                        $wl_ids = implode(',', $my_watchlist);
+                        $saved_movies_query = $conn->query("SELECT * FROM movies WHERE id IN ($wl_ids) ORDER BY title ASC");
+                        
+                        while ($saved_movie = $saved_movies_query->fetch_assoc()):
+                    ?>
+                        <div class="movie-card" style="position: relative;" onclick="window.location.href='movie.php?id=<?php echo $saved_movie['id']; ?>'">
+                            
+                            <form method="POST" action="index.php" style="position: absolute; top: 10px; right: 10px; z-index: 10;" onclick="event.stopPropagation();">
+                                <input type="hidden" name="movie_id" value="<?php echo $saved_movie['id']; ?>">
+                                <button type="submit" name="toggle_watchlist" style="background: rgba(0,0,0,0.8); border: 1px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+                                    ✔ Saved
+                                </button>
+                            </form>
+
+                            <img src="uploads/<?php echo htmlspecialchars($saved_movie['poster_image'], ENT_QUOTES); ?>" alt="Poster">
+                            <div class="movie-info">
+                                <h4><?php echo htmlspecialchars($saved_movie['title'], ENT_QUOTES); ?></h4>
+                                <span class="genre"><?php echo htmlspecialchars($saved_movie['genre'], ENT_QUOTES); ?></span>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>
+                <?php endif; ?>
             </div>
+            
         </div>
     </section>
 
